@@ -1,6 +1,7 @@
 package edu.csuft.xw.demo;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +21,7 @@ import org.jsoup.select.Elements;
 // 评分人数    int num
 // 影片排名    int id
 // 短评            String quote
+// 海报            String poster
 public class demo {
 //	alt+/
      public static void main(String[] args) {
@@ -31,13 +33,28 @@ public class demo {
     	     
     	     Elements es= doc.select(".grid_view .item");
     	     System.out.println(es.size());
-    	     for(Element e: es){
-    	    	 // 每一部影片
-    	    	 Element t = e.select(".title").first();
-    	    	 String num =e.select(".star span").last().text();
-    	    	 System.out.println(t.text());
-    	     }
     	     
+    	    	 // 每一部影片
+    	    	
+    	     
+ //创建一个影片的列表
+   ArrayList<Film> list = new ArrayList();
+   
+   for(Element e : es){
+	   Film f = new Film();
+	   //每一部影片
+	   f.id = Integer.parseInt(e.select(".pic em").first().text());
+	   f.poster = e.select("img").first().attr("src");
+	   f.info = e.select(".bd p").first().text();
+	   f.title = e.select(".title").first().text();
+	   f.rating = Double.parseDouble(e.select(".rating_num").first().text());
+	   String num = e.select(".star span").last().text();
+	   f.num = Integer.parseInt(num.substring(0, num.length() -3));
+	   f.quote = e.select(".inq").first().text();
+	   System.out.println(f);
+	   list.add(f);
+   
+   }
     	 
 		//    String title= doc.title();
 	
